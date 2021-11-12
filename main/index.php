@@ -116,7 +116,7 @@
                                                 <thead>
                                                   <tr>
                                                     
-                                                    <th > Customer </th>
+                                                    <th width = "46%" > Customer </th>
                                                     <th  > No. of Purchase </th>
                                                     
                                                 </thead>
@@ -158,7 +158,7 @@
                                                 <thead>
                                                   <tr>
                                                     
-                                                    <th width = "42%" > Product</th>
+                                                    <th width = "46%" > Product</th>
                                                     <th > No. of Sale </th>
                                                     
                                                 </thead>
@@ -200,7 +200,7 @@
                                                 <thead>
                                                   <tr>
                                                     
-                                                    <th > Category</th>
+                                                    <th width = "46%" > Category</th>
                                                     <th > Product Sold </th>
                                                     
                                                 </thead>
