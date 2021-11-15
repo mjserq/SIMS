@@ -112,7 +112,7 @@
                                         <h2 class="header-title mb-3">Top Customers</h2>
 
                                         <div dir="ltr">
-                                            <div ><table class="table table-borderless"  data-responsive="table" style="text-align: left;">
+                                            <div ><table class="hoverTable" id="resultTable" data-responsive="table" style="text-align: left;">
                                                 <thead>
                                                   <tr>
                                                     
@@ -154,7 +154,7 @@
                                         <h2 class="header-title mb-3">Top Sold Products</h2>
 
                                         <div dir="ltr">
-                                            <div ><table class="table table-borderless"  data-responsive="table" style="text-align: left;">
+                                            <div ><table class="hoverTable" id="resultTable" data-responsive="table" style="text-align: left;">
                                                 <thead>
                                                   <tr>
                                                     
@@ -196,7 +196,7 @@
                                         <h2 class="header-title mb-3">Top Sales Categories</h2>
 
                                         <div dir="ltr">
-                                            <div ><table class="table table-borderless"  data-responsive="table" style="text-align: left;">
+                                            <div ><table class="hoverTable" id="resultTable" data-responsive="table" style="text-align: left;">
                                                 <thead>
                                                   <tr>
                                                     
