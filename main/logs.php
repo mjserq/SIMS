@@ -94,7 +94,7 @@ Logs
 			<td><?php echo $row['amount']; ?></td>
 
 
-			<td><a rel="facebox" title="Click to edit the product" name="searchBtn" href="preview.php?invoice=<?php echo $row['invoice_number']; ?>">
+			<td><a href="logsview.php?invoice=<?php echo $row['invoice_number']; ?>">
 					<button class="btn btn-primary"><i> View</i></button> </a></td>
 			
 			</tr>
