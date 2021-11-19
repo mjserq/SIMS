@@ -72,6 +72,8 @@ Logs
 			<th width="12%"> Type </th>
 			<th width="12%"> Cash in </th>
 			<th width="12%"> Amount </th>
+			<th width="2%"> Action </th>
+		</tr>
 		</tr>
 	</thead>
 	<tbody>
@@ -90,9 +92,14 @@ Logs
 			<td><?php echo $row['type']; ?></td>
 			<td><?php echo $row['cash']; ?></td>
 			<td><?php echo $row['amount']; ?></td>
+
+
+			<td><a rel="facebox" title="Click to edit the product" name="searchBtn" href="preview.php?invoice=<?php echo $row['invoice_number']; ?>">
+					<button class="btn btn-primary"><i> View</i></button> </a></td>
 			
 			</tr>
 			<?php
+
 				}
 			?>
 		</tbody>

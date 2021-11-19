@@ -68,7 +68,7 @@ form.example::after {
                   ?>
 
 
-                <!-- <li><form class="example" action="preview.php?invoice=">
+                <!--<li><form class="example" action="preview.php?invoice=">
                   <input style="width: 120px; height: 40px;" type="text" placeholder="Invoice No." name="invoice" required>
                   <button style="width: 40px" type="submit" name="searchBtn"><i class="fa icon-search icon-small"></i></button>
 

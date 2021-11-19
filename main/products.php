@@ -144,7 +144,7 @@ function sum() {
 <a rel="facebox" href="addproduct.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Product</button></a><br><br>
 <a href="cat.php"><Button class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Category</button></a><br><br>
 
-<table class="hoverTable table table-borderless"  data-responsive="table" style="text-align: left;">
+<table class="hoverTable table table-bordered"  data-responsive="table" style="text-align: left;">
 	<thead>
 		<tr style="font-size: 15px">
 			<th width="12%"> Product Code </th>
