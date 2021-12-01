@@ -3,7 +3,31 @@
 <head>
 	<title>Point Of Sale</title>
 </head>
-<body>
+
+<script src="js/bootstrap.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="js/jquery.js"></script>
+ 
+ <script type="text/javascript">
+   function GetDetail(str){
+    if (str.length == 0) {
+      document.getElementById("dis").value = "asdasdasd";
+      return;
+    }
+    else{
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+          var myObj = JSON.parse(this.responseText);
+          document.getElementById("dis").value= myObj[0];
+        }
+      };
+     xmlhttp.open("GET","search2.php?cust=" +str,true);
+     xmlhttp.send();
+    }
+   }
+ </script>
+<body >
 
 <?php include 'header.php'; ?>
 <?php include('navfixed.php');?>
@@ -43,7 +67,9 @@
 												
 	<input type="hidden" name="pt" value="<?php echo $_GET['id']; ?>" />
 	<input type="hidden" name="invoice" value="<?php echo $_GET['invoice']; ?>" />
-	<select name="product" style="width:800px; "class="chzn-select" required>
+	<br>
+
+	<select name="product" style="width:700px; "class="chzn-select" required>
 	<option></option>
 		<?php
 		include('../connect.php');
@@ -51,19 +77,43 @@
 			$result->bindParam(':userid', $res);
 			$result->execute();
 			for($i=0; $row = $result->fetch(); $i++){
+			$date = DateTime::createFromFormat('Y-m-d', $row["expiry_date"]);
 		?>
-			<option value="<?php echo $row['product_id'];?>"><?php echo $row['gen_name']; ?> - <?php echo $row['product_name']; ?> - <?php echo $row['subcat']; ?> - Qty: <?php echo $row['qty']; ?> - Price: <?php echo $row['price']; ?> | Expires at: <?php echo $row['expiry_date']; ?></option>
+			<option value="<?php echo $row['product_id'];?>"><?php echo $row['gen_name']; ?> - <?php echo $row['product_name']; ?> - <?php echo $row['subcat']; ?> - Qty: <?php echo $row['qty']; ?> - Price: <?php echo $row['price']; ?> | Expires at: <?php echo htmlspecialchars($date->format('F d, Y'));?></option>
 	<?php
 				}
 			?>
 </select>
 Qty: <input type="number" name="qty" value="1" min="1" placeholder="Qty" autocomplete="off" style="width: 68px; height:30px; padding-top:6px; padding-bottom: 4px; margin-right: 4px; font-size:15px;"required>
-Discount: <input type="number" name="discount" value="" placeholder="Discount" autocomplete="off" style="width: 85px; height:30px; padding-top:6px; padding-bottom: 4px; margin-right: 4px; font-size:15px;" /> 
+<input  type="hidden" placeholder="Enter Customer" id="cust" onkeyup="GetDetail(this.value)" style="width: 200px; height:30px; padding-top:6px; padding-bottom: 4px; margin-right: 4px; font-size:15px;">
+	<!--<option >-Select Customer-</option>-->
+		<?php
+		include('../connect.php');
+		$result = $db->prepare("SELECT * FROM customer_list");
+			$result->bindParam(':userid', $res);
+			$result->execute();
+			for($i=0; $row = $result->fetch(); $i++){
+		?>
+			<!--<option value="<?php echo $row['cust_id'];?>"><?php echo $row['name'];?></option>-->
+	<?php
+				}
+			?>
+</select>
+
+Discount: <input type="number" id="dis" style="width: 68px; height:30px; padding-top:6px; padding-bottom: 4px; margin-right: 4px; font-size:15px;" placeholder="Discount" value="<?php echo $row['discount']; ?>" name="discount"/> 
 <input type="hidden" name="date" value="<?php echo date("Y/m/d"); ?>" />
 <Button type="submit" class="btn btn-info" style="width: 123px; height:35px; margin-top:-5px;" /><i class="icon-plus-sign icon-large"></i> Add</button>
+
 </form>
+
 <table border="0" class="table"  data-responsive="table">
+
+
 	<thead>
+		<?php if (isset($_GET['error'])) { ?>
+     		<p class="error"><?php echo $_GET['error']; ?></p>
+     	<?php } ?>
+
 		<tr>
 			<th> Product Code </th>
 			<th> Category </th>
@@ -71,11 +121,13 @@ Discount: <input type="number" name="discount" value="" placeholder="Discount" a
 			<th> Price </th>
 			<th> Qty </th>			
 			<th> Amount </th>
-			<th> Profit </th>
+			<th hidden=""> Profit </th>
 			<th> Action </th>
 		</tr>
 	</thead>
 	<tbody >
+
+
 		
 			<?php
 				$id=$_GET['invoice'];
@@ -107,7 +159,7 @@ Discount: <input type="number" name="discount" value="" placeholder="Discount" a
 
 	
 
-			<td>
+			<td hidden="">
 			<?php
 			$profit=$row['profit'];
 			echo formatMoney($profit, true);
@@ -125,7 +177,7 @@ Discount: <input type="number" name="discount" value="" placeholder="Discount" a
 			<th>  </th>
 			<th>  </th>
 			<td> Total Amount: </td>
-			<td> Total Profit: </td>
+			<td hidden=""> Total Profit: </td>
 			<th>  </th>
 		</tr>
 			<tr>
@@ -156,7 +208,7 @@ Discount: <input type="number" name="discount" value="" placeholder="Discount" a
 				}
 				?>
 				</strong></td>
-				<td colspan="1"><strong style="font-size: 25px; color: #222222;">
+				<td hidden="" colspan="1"><strong style="font-size: 25px; color: #222222;">
 			<?php 
 				$resulta = $db->prepare("SELECT sum(profit) FROM sales_order WHERE invoice= :b");
 				$resulta->bindParam(':b', $sdsd);
@@ -183,7 +235,7 @@ Discount: <input type="number" name="discount" value="" placeholder="Discount" a
                                 <th></th>
                                 <th></th>
                                 <th></th>
-				<th colspan="3">
+				<th colspan="1">
                                         
                                 <a rel="facebox" href="checkout.php?pt=<?php echo $_GET['id']?>&invoice=<?php echo $_GET['invoice']?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $asd ?>&cashier=<?php echo $_SESSION['SESS_FIRST_NAME']?>"><button class="btn btn-success btn-large btn-block"><i  class="icon icon-save icon-large" ></i> Invoice</button></a>
 <div class="clearfix"></div>
@@ -192,10 +244,14 @@ Discount: <input type="number" name="discount" value="" placeholder="Discount" a
 			</tr>
 		
 	</tbody>
+
+
 </table><br>
 
 </div >
 </div>
 </body>
+
+
 <?php include('footer.php');?>
 </html>

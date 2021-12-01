@@ -4,6 +4,15 @@
 <html>
 <head>
 	<title>Dashboard</title>
+
+
+ 
+
+<!--sa poip up-->
+
+<script src="js/application.js" type="text/javascript" charset="utf-8"></script>
+
+
 </head>
 <body>
 
@@ -12,8 +21,12 @@
 <?php include 'sidebar.php'; ?>
 
 
+
+
     <div style="margin-left: 200px" class="container-fluid">
+
       <div class="row-fluid">
+
 	
 	<div class="contentheader">
 			<i class="icon-dashboard"></i> Dashboard
@@ -21,9 +34,13 @@
 			<ul class="breadcrumb">
 			<li class="active">Dashboard</li>
 			</ul>
-			
-			
+
+
 <div id="mainmain">
+
+  
+          
+
 
 <!-- Start Content-->
                     <div class="container-fluid">
@@ -36,20 +53,27 @@
                           ?>
 
                         <div class="row">
-                                <div class="card tilebox-one" style="margin-left: 0px;">
+                                <div class="card tilebox-one" style="margin-left: 50px;">
                                     <div class="card-body" style="  width: 250px;
                                                                     padding: 10px;
                                                                     border-radius: 20px;
                                                                     background-color: lightblue;
                                                                     border: 5px  lightgray;
                                                                     margin: 0;">
-                                        <h4 class="text-uppercase mt-0">Yesterday's Sales</h4>
+
+                                        <a href="yesterdayview.php" rel="facebox"><h4 title="Click here to view" class="text-uppercase mt-0">Yesterday's Sales</h4></a>
                                         <h2 class="my-2"><?php echo $row['COUNT(DISTINCT invoice)']; ?></h2>
                                         <?php
                                              } 
                                          ?>
+                                        <!-- <a style="margin-left: -2px;" rel="facebox" title="Click to view" href="yesterdayview.php">
+          <button class="btn btn-info"><i class="icon-list"></i></button> </a>-->
+
+                                         
+                                         
                                     </div> <!-- end card-body-->
                                 </div>
+
                                 <!--end card-->
 
                                 <?php
@@ -59,7 +83,7 @@
                                     for($i=0; $row = $result2->fetch(); $i++){
                                     ?>
 
-                                <div class="card tilebox-one" style="margin-top: -110px;
+                                <div class="card tilebox-one" style="margin-top: -120px;
                                                                     margin-left: 350px">
                                     <div class="card-body" style="  width: 250px;
                                                                     padding: 10px;
@@ -67,15 +91,21 @@
                                                                     background-color: lightblue;
                                                                     border: 5px  lightgray;
                                                                     margin: 0;">
-                                        <h4 class="text-uppercase mt-0">Today's Sales</h4>
+                                       <a href="todayview.php" rel="facebox"> <h4  class="text-uppercase mt-0">Today's Sales</h4></a>
                                         <h2 class="my-2" ><?php echo $row['COUNT(DISTINCT invoice)']; ?></h2>
                                         <?php
                                              }
                                          ?>
+                                         <!--<a style="margin-left: -2px;" rel="facebox" title="Click to view" href="todayview.php">
+          <button class="btn btn-info"><i class="icon-list"></i></button> </a>-->
+
                                         
                                     </div> <!-- end card-body-->
                                 </div>
                                 <!--end card--> 
+
+
+
 
 
                                 <?php
@@ -85,31 +115,86 @@
                                     for($i=0; $row = $result3->fetch(); $i++){
                                     ?>
 
-                                <div class="card tilebox-one" style="margin-top: -110px; margin-left: 700px;">
+                                <div class="card tilebox-one" style="margin-top: -120px; margin-left: 650px;">
                                     <div class="card-body" style="  width: 250px;
                                                                     padding: 10px;
                                                                     border-radius: 20px;
                                                                     background-color: lightblue;
                                                                     border: 5px  lightgray;
                                                                     margin: 0;">
-                                        <h4 class="text-uppercase mt-0">Pending Reservations</h4>
+                                        <a href="pendingview.php" rel="facebox"><h4  title="Click to View" class="text-uppercase mt-0">Pending Reservations</h4></a>
                                         <h2 class="my-2" ><?php echo $row['COUNT(*)']; ?></h2>
                                         <?php
                                              }
                                          ?>
+                                        <!-- <a style="margin-left: -2px;" rel="facebox" title="Click to view" href="pendingview.php">
+          <button class="btn btn-info"><i class="icon-list"></i></button> </a>-->
                                         
                                     </div> <!-- end card-body-->
                                 </div>
-                                <!--end card-->       
+                                <!--end card-->
+
+
+                                <?php
+                          include('../connect.php');
+                          $result1 = $db->prepare("SELECT COUNT(*) FROM products WHERE expiry_date<=curdate() + interval 3 day");
+                          $result1->execute();
+                          for($i=0; $row = $result1->fetch(); $i++){
+                          ?>
+
+                        <div class="row">
+                                <div class="card tilebox-one" style="margin-left: 233px; margin-top: 30px;">
+                                    <div class="card-body" style="  width: 250px;
+                                                                    padding: 10px;
+                                                                    border-radius: 20px;
+                                                                    background-color: lightblue;
+                                                                    border: 5px  lightgray;
+                                                                    margin: 0;">
+                                        <a href="expiringview.php" rel="facebox"><h4 class="text-uppercase mt-0">Expiring Products</h4></a>
+                                        <h2 class="my-2"><?php echo $row['COUNT(*)']; ?></h2>
+                                        <?php
+                                             } 
+                                         ?>
+                                        <!-- <a style="margin-left: -2px;" rel="facebox" title="Click to view" href="expiringview.php">
+          <button class="btn btn-info"><i class="icon-list"></i></button> </a>-->
+                                    </div> <!-- end card-body-->
+                                </div>
+                                <!--end card-->  
+
+                                <?php
+                          include('../connect.php');
+                          $result1 = $db->prepare("SELECT COUNT(*) FROM products where qty <=5 ");
+                          $result1->execute();
+                          for($i=0; $row = $result1->fetch(); $i++){
+                          ?>
+
+                        <div class="row">
+                                <div class="card tilebox-one" style="margin-left: 563px; margin-top: -120px;">
+                                    <div class="card-body" style="  width: 250px;
+                                                                    padding: 10px;
+                                                                    border-radius: 20px;
+                                                                    background-color: lightblue;
+                                                                    border: 5px  lightgray;
+                                                                    margin: 0;">
+                                        <a href="criticalview.php" rel="facebox"><h4 class="text-uppercase mt-0">Critical Products</h4></a>
+                                        <h2 class="my-2"><?php echo $row['COUNT(*)']; ?></h2>
+                                        <?php
+                                             } 
+                                         ?>
+                                        <!--<a style="margin-left: -2px;" rel="facebox" title="Click to view" href="criticalview.php">
+          <button class="btn btn-info"><i class="icon-list"></i></button> </a>-->
+                                    </div> <!-- end card-body-->
+                                </div>
+                                <!--end card-->            
                         <br><br>
 
                           <center>
-                            <div class="col-xl-9 col-lg-8">
+                            <div class="col-xl-9 col-lg-8" style="margin-left: 90px;">
                                 <div class="card card-h-100">
                                     <div class="card-body">
                                        
                                         
-                                        <h2 class="header-title mb-3">Top Customers</h2>
+                                        <a href="customerlist.php" style="color: black;"><h2 class="header-title mb-3">Top Customers</h2></a>
 
                                         <div dir="ltr">
                                             <div ><table class="hoverTable" id="resultTable" data-responsive="table" style="text-align: left;">
@@ -146,7 +231,7 @@
 
                         <br><br>
 
-                            <div class="col-xl-9 col-lg-8">
+                            <div class="col-xl-9 col-lg-8" style="margin-left: 90px;">
                                 <div class="card card-h-100">
                                     <div class="card-body">
                                        
@@ -188,7 +273,7 @@
 
                         <br><br>
 
-                            <div class="col-xl-9 col-lg-8">
+                            <div class="col-xl-9 col-lg-8" style="margin-left: 90px;">
                                 <div class="card card-h-100">
                                     <div class="card-body">
                                        
@@ -239,6 +324,17 @@
 </div>
 </div>
 </body>
-<footer><center> SysGrinder 2021 </center></footer>
+
+<script src="lib/jquery.js" type="text/javascript"></script>
+<script src="src/facebox.js" type="text/javascript"></script>
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+    $(document).ready(function() {
+    $('#yesterday').facebox();
+})
+  })
+</script>
+<br><br>
+<footer style="margin-left: -80px"><center> SysGrinder 2021 </center></footer>
 <?php include('footer.php'); ?>
 </html>

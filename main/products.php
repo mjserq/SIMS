@@ -110,15 +110,18 @@ function sum() {
 				$result->execute();
 				$rowcount1234 = $result->rowcount();
 
-			include('../connect.php');
-				$result = $db->prepare("SELECT * FROM products where expiry_date < NOW() ORDER BY product_id DESC");
+				include('../connect.php');
+				$result = $db->prepare("SELECT * FROM products where expiry_date<=curdate()");
 				$result->execute();
-				$total = $result->rowcount();
+				$expiring = $result->rowcount();
+				
 
 				include('../connect.php');
 				$result = $db->prepare("DELETE FROM products where qty <= 0");
 				$result->execute();
 				$delete = $result->rowcount();
+
+
 
 			?>
 			<center>
@@ -134,32 +137,31 @@ function sum() {
 			<font color="red" style="font:bold 22px 'Aleo'; margin-left: 7px;">[<?php echo $rowcount1234;?>]</font> Products has Critical Quantity  
 			</div>
 
-			<!--<div>
-			<font style="color:black; font:bold 22px 'Aleo'; margin-left: -54px;">[<?php echo $total;?>]</font> Total expired products   
-			</div>-->
+			<div>
+			<font style="color:black; font:bold 22px 'Aleo'; margin-left: -92px;">[<?php echo $expiring;?>]</font> Products Expired   
+			</div>
 			</center>
         </div>
     
-<input type="text" style="height:35px; color:#222;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
+<input type="text" style="height:35px; width: 40%; margin-top: 50px; margin-left: 10%; color:#222;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
 <a rel="facebox" href="addproduct.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Product</button></a><br><br>
 <a href="cat.php"><Button class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Category</button></a><br><br>
 
-<table class="hoverTable table table-bordered"  data-responsive="table" style="text-align: left;">
+<table class="hoverTable table table-borderless"  data-responsive="table" style=" width: 80%; margin-left: 10%" >
 	<thead>
 		<tr style="font-size: 15px">
-			<th width="12%"> Product Code </th>
-			<th width="10%"> Product Name </th>
-			<th width="5%"> Category </th>
-			<th width="7%"> Sub-Category </th>
-			<th width="7%"> Supplier </th>
-			<th width="9%"> Date Received </th>
-			<th width="8%"> Expiry Date </th>
-			<th width="6%"> Original Price </th>
-			<th width="6%"> Selling Price </th>
-			<th width="6%"> QTY </th>
-			<th width="5%"> Qty Left </th>
-			<th width="8%"> Total </th>
-			<th width="8%"> Action </th>
+			<th width="1%"></th>
+			<th width="1%"></th>
+			<th width="6"> Product Code </th>
+			<th width="6"> Product Name </th>
+			<th width="3"> Category </th>
+			<th width="4"> Sub-Category </th>
+			<th width="6"> Expiry Date </th>
+			<th width="2"> Original Price </th>
+			<th width="3"> Selling Price </th>
+			<th width="3" > Qty Left </th>
+			<th width="3" > Total </th>
+			<th width="11%"> Action </th>
 		</tr>
 	</thead>
 	<tbody>
@@ -181,41 +183,48 @@ function sum() {
 					return $number;
 				}
 				include('../connect.php');
-				$result = $db->prepare("SELECT *, price * qty as total FROM products ORDER BY product_id DESC");
+				$result = $db->prepare("SELECT *, price * qty as total  FROM products ORDER BY product_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){
 
 
-
+				   $datenow = date('Y-m-d'); 
+				   $expiry = $datenow;
+                   $expired=$row['expiry_date'];	
 					$total=$row['total'];
-				$availableqty=$row['qty'];
-				if ($availableqty < 10) {
-				echo '<tr class="alert alert-warning record" style="color: #fff; background:rgb(552, 95, 66);">';
-				}
-                            
-				   	$total=$row['total'];
-				$qtyleft=$row['qty'];
-				if ($qtyleft <= 5) {
-				echo '<tr class="alert alert-warning record" style="color: #fff; background:red;">';
-				   }
+					$qtyleft=$row['qty'];
+					if ($qtyleft <= 5 )  {
+				    echo '<tr class="alert alert-warning record" style="color: #fff; background:red;">';
 
-				 
+					echo '<td style="color: #fff; background:red;">Critical</td>';
+					echo '<td ></td>';
 
-				   
+
+                   }
+
+   				
 				   
 				else {
 				echo '<tr class="record">';
+				echo '<td ></td>';
+				echo '<td ></td>';
+			
+			
+				
 				}
 			?>
 
 
-			<td><?php echo $row['product_code']; ?></td>
+			<td colspan="" ><?php echo $row['product_code']; ?></td>
 			<td><?php echo $row['product_name']; ?></td>
 			<td><?php echo $row['gen_name']; ?></td>
 			<td><?php echo $row['subcat']; ?></td>
-			<td><?php echo $row['supplier']; ?></td>
-			<td><?php echo $row['date_arrival']; ?></td>
-			<td><?php echo $row['expiry_date']; ?></td>
+			<?php
+			 $datenow = date('Y-m-d'); 
+			$date = DateTime::createFromFormat('Y-m-d', $row["expiry_date"]);
+			
+			?>
+			<td><?php echo htmlspecialchars($date->format('F d, Y'));?></td>
 			<td><?php
 			$oprice=$row['o_price'];
 			echo formatMoney($oprice, true);
@@ -224,10 +233,12 @@ function sum() {
 			$pprice=$row['price'];
 			echo formatMoney($pprice, true);
 			?></td>
-			<td><?php echo $row['qty_sold']; ?></td>
+
 			<td ><?php echo $row['qty']; ?></td>
+
 			<td>
 			<?php
+		
 			$total=$row['total'];
 			echo formatMoney($total, true);
 			?>
@@ -235,9 +246,13 @@ function sum() {
 				<a rel="facebox" title="Click to edit the product" href="editproduct.php?id=<?php echo $row['product_id']; ?>">
 					<button class="btn btn-warning"><i class="icon-edit"></i></button> </a>
 				<a href="#" id="<?php echo $row['product_id']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a>
+				<a rel="facebox" title="Click to view product" href="viewproduct.php?id=<?php echo $row['product_id']; ?>">
+					<button class="btn btn-primary"><i class="icon-list"></i></button> </a>
+
 							</td>
 			</tr>
 			<?php
+				
 				}
 			?>
 		

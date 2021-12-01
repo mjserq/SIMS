@@ -27,7 +27,7 @@ function Clickheretoprint()
 { 
   var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,"; 
       disp_setting+="scrollbars=yes,width=800, height=400, left=100, top=25"; 
-  var content_vlue = document.getElementById("content").innerHTML; 
+  var content_vlue = document.getElementById("content1").innerHTML; 
   
   var docprint=window.open("","",disp_setting); 
    docprint.document.open(); 
@@ -92,26 +92,17 @@ $finalcode='MR-'.createRandomPassword();
 	<div class="container-fluid">
       <div class="row-fluid">
 	
-	<div class="contentheader">
-			<i class="icon-table"></i> Sales Receipt
-			</div>
-			<ul class="breadcrumb">
-			<li><a href="logs.php">Logs</a></li> /
-			<li class="active">Reciept</li>
-			</ul>
 
-	
-		<div style="margin-top: -19px; margin-bottom: 21px;">
-				<a  href="logs.php"><button class="btn btn-default btn-large" style="float: left;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
-				<div class="pull-right" style="margin-right:100px;">
-		<a href="javascript:Clickheretoprint()" style="font-size:20px;"><button class="btn btn-success btn-large"><i class="icon-print"></i> Print</button></a>
-		</div>
+				
 
-<div class="content" id="content">
+<div class="content" id="content1">
 <div style="margin: 0 auto; padding: 20px; width: 900px; font-weight: normal;">
 	<div style="width: 100%; height: 190px;" >
 	<div style="width: 900px; float: left;">
-	<center><div style="font:bold 25px 'Aleo';">Sales Receipt</div>
+		<center>
+		      		<img src="img/mrvapelogo.jpg" width="50px" height="50px" >
+		      		<br>
+	<div style="font:bold 25px 'Aleo';">Sales Receipt</div>
 	MR. Vape Shop	<br>
 	San Nicolas, Pangasinan	<br>	<br>
 	</center>
@@ -181,7 +172,12 @@ $finalcode='MR-'.createRandomPassword();
 				?>
 				</td>
 				<td><?php echo $row['qty']; ?></td>
-				<td><?php echo $row['discount']; ?></td>
+				<td><?php 
+					$discount = $row['discount'];
+					echo formatMoney($discount,true);
+				?>
+					
+				</td>
 			
 				<td>
 				<?php
@@ -258,10 +254,15 @@ $finalcode='MR-'.createRandomPassword();
 			
 		</tbody>
 	</table>
-	
+		
 	</div>
 	</div>
 	</div>
+	<center>
+			
+		<a href="javascript:Clickheretoprint()" style="font-size:20px;"><button class="btn btn-success btn-large"><i class="icon-print"></i> Print</button></a>
+		
+		</center>
 	</div>
 	
 </div>

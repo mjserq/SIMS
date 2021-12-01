@@ -111,7 +111,10 @@ $finalcode='MR-'.createRandomPassword();
 <div style="margin: 0 auto; padding: 20px; width: 900px; font-weight: normal;">
 	<div style="width: 100%; height: 190px;" >
 	<div style="width: 900px; float: left;">
-	<center><div style="font:bold 25px 'Aleo';">Sales Receipt</div>
+	<center>
+			<img src="img/mrvapelogo.jpg" width="50px" height="50px" >
+		      		<br>
+		<div style="font:bold 25px 'Aleo';">Sales Receipt</div>
 	MR. Vape Shop	<br>
 	San Nicolas, Pangasinan	<br>	<br>
 	</center>

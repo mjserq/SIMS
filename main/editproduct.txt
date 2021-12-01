@@ -12,7 +12,7 @@
 <hr>
 <div id="ac">
 <input type="hidden" name="memi" value="<?php echo $id; ?>" />
-<span>Brand Name : </span><input type="text" style="width:265px; height:30px;"  name="code" value="<?php echo $row['product_code']; ?>" /><br>
+<span>Brand Name : </span><p type="text" style="width:265px; height:30px;"  name="code" value="<?php echo $row['product_code']; ?>" /><br>
 <span>Generic Name : </span><input type="text" style="width:265px; height:30px;"  name="gen" value="<?php echo $row['gen_name']; ?>" /><br>
 <span>Description : </span><input type="text" style="width:265px; height:30px;" name="name" value="<?php echo $row['product_name']; ?>" /><br>
 <span>Expiry Date : </span><input type	="date" style="width:265px; height:30px;" name="exdate" value="<?php echo $row['expiry_date']; ?>" /><br>

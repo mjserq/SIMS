@@ -4,7 +4,7 @@ require_once('auth.php');
 <html>
 <head>
 <title>
-Logs
+Customer List
 </title>
 
 
@@ -39,115 +39,83 @@ Logs
     })
   })
 </script>
-
-<link rel="stylesheet" type="text/css" href="tcal.css" />
-
 </head>
+
+
+
+
 
 <body>
 <?php include('navfixed.php');?>
-
-	<div class="container-fluid">
+<div class="container-fluid">
       <div class="row-fluid">
 	
 	<div class="contentheader">
-			<i class="icon-table"></i> Sales Logs
+			<i class="icon-table"></i> Customer List
 			</div>
 			<ul class="breadcrumb">
 			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Sales Logs</li>
+			<li class="active">Customer List</li>
 			</ul>
 
 	
 		<div style="margin-top: -19px; margin-bottom: 21px;">
 				<a  href="index.php"><button class="btn btn-default btn-large" style="float: left;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
-<br>
-<br>
-<br>
+			<br><br>
+			
+								<center><h1>List For Discount</h1></center>
+
+		<br><br><input type="text" style="height:35px; width: 40%; margin-top: 50px; margin-left: 22%; color:#222;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
+<a rel="facebox" href="addcustlist.php"><Button type="submit" class="btn btn-info" style=" margin-left: 40px; margin-top:10px; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Customer</button></a><br><br>
 
 
-<input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search here..." autocomplete="off" />
-<div class="content" id="content">
-<br><br><br>
+<div id="mainmain">
 
-<table class="table table-bordered"  data-responsive="table" style="text-align: left;">
+<table class="hoverTable table table-borderless"  data-responsive="table" style=" width: 100%; margin-left: -40px;" >
 	<thead>
-		<tr>
-			<th width="9%"> Date </th>
-			<th width="14%"> Invoice Number</th>
-			<th width="16%"> Cashier </th>
-			<th width="15%"> Customer Name </th>
-			<th width="12%"> Cash in </th>
-			<th width="12%"> Amount </th>
-			<th width="2%"> Action </th>
-		</tr>
+		<tr style="font-size: 15px">
+			
+			<th width="" > Name </th>
+			<th width="%"> Discount </th>
+			<th width="" > Action </th>
+			
 		</tr>
 	</thead>
 	<tbody>
-		
-			<?php
 
-			function formatMoney($number, $fractional=false) {
-					if ($fractional) {
-						$number = sprintf('%.2f', $number);
-					}
-					while (true) {
-						$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-						if ($replaced != $number) {
-							$number = $replaced;
-						} else {
-							break;
-						}
-					}
-					return $number;
-				}
+				<?php
 				include('../connect.php');
-				$result = $db->prepare("SELECT * FROM sales ORDER BY transaction_id DESC");
+				$result = $db->prepare("SELECT * FROM customer_list ");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){
 			?>
 			<tr class="record">
-			<td><?php echo $row['date']; ?></td>
-			<td><?php echo $row['invoice_number']; ?></td>
-			<td><?php echo $row['cashier']; ?></td>
+
+			<td hidden ><?php echo $row['cust_id']; ?></td>
 			<td><?php echo $row['name']; ?></td>
+			<td><?php echo $row['discount']; ?>.00</td>
 
-			<td>
-				<?php 
-					$cash = $row['cash'];
-					echo formatMoney($cash, true);
-
-				?>
-					
-				</td>
-			<td>
-
-				<?php 
-					$amount = $row['amount'];
-					echo formatMoney($amount,true);
-				?>
-					
-
-				</td>
-
-
-			<td>
-					<a rel="facebox" title="Click to view" href="logsview.php?invoice=<?php echo $row['invoice_number']; ?>">
-					<button class="btn btn-primary"><i class="icon-list"></i></button> </a>
-				</td>
 			
+			
+			</td>			<td>
+				<a rel="facebox" title="Click to edit the product" href="editcustlist.php?id=<?php echo $row['cust_id']; ?>">
+					<button class="btn btn-warning"><i class="icon-edit"></i></button> </a>
+				<a href="#" id="<?php echo $row['cust_id']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a>
+				<!--<a rel="facebox" title="Click to view product" href="viewproduct.php?id=<?php echo $row['cust_id']; ?>">
+					<button class="btn btn-primary"><i class="icon-list"></i></button> </a>-->
+
+							</td>
 			</tr>
-			<?php
-
-				}
-			?>
-		</tbody>
+			
+		<?php
+	}
+		?>
+		
+	</tbody>
 </table>
-
 <div class="clearfix"></div>
 </div>
-</div>
-</div>
+
 </div>
 
 <script src="js/jquery.js"></script>
@@ -165,12 +133,12 @@ var del_id = element.attr("id");
 
 //Built a url to send
 var info = 'id=' + del_id;
- if(confirm("Sure you want to delete this update? There is NO undo!"))
+ if(confirm("Sure you want to delete this Product?"))
 		  {
 
  $.ajax({
    type: "GET",
-   url: "deletesalesinventory.php",
+   url: "deletecustlist.php",
    data: info,
    success: function(){
    

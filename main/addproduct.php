@@ -25,21 +25,7 @@
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="tcal.css" />
 <script type="text/javascript" src="tcal.js"></script>
-<script language="javascript">
-function Clickheretoprint()
-{ 
-  var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,"; 
-      disp_setting+="scrollbars=yes,width=700, height=400, left=100, top=25"; 
-  var content_vlue = document.getElementById("content").innerHTML; 
-  
-  var docprint=window.open("","",disp_setting); 
-   docprint.document.open(); 
-   docprint.document.write('</head><body onLoad="self.print()" style="width: 700px; font-size:11px; font-family:arial; font-weight:normal;">');          
-   docprint.document.write(content_vlue); 
-   docprint.document.close(); 
-   docprint.focus(); 
-}
-</script>
+
 
 
 
@@ -49,12 +35,13 @@ function Clickheretoprint()
 <center><h4><i class="icon-plus-sign icon-large"></i> Add Product</h4></center>
 <hr>
 <div id="ac">
-<span>Item Code : </span><input type="text" style="width:265px; height:30px;" value="MRVS-<?php 
+<span>Product Code : </span><input type="text" style="width:265px; height:30px;" value="MRVS-<?php 
 $prefix= md5(time()*rand(1, 2)); echo strip_tags(substr($prefix ,0,4));?>" name="code" Readonly Required ><br>
-<span>Item Name : </span><input type="text" style="width:265px; height:30px;" name="name" Required/><br>
+<span>Product Name : </span><input  type="text" style="width:265px; height:30px;" placeholder="Enter Product Name" name="name" Required/><br>
+
 <span>Category : </span>
-<select name="gen"  style="width:265px; height:30px; margin-left:-5px;" >
-<option></option>
+<select  name="gen" id="cat" onchange="GetDetail(this.value)" style="width:265px; height:30px; margin-left:-5px; " >
+<option >Select Category</option>
 	<?php
 	include('../connect.php');
 	$result = $db->prepare("SELECT * FROM category");
@@ -64,18 +51,28 @@ $prefix= md5(time()*rand(1, 2)); echo strip_tags(substr($prefix ,0,4));?>" name=
 	?>
 		<option><?php echo $row['name']; ?></option>
 	<?php
-	}
-	?>
+  }
+  ?>
 </select><br>
-<span>Sub-Category : </span><input type="text" style="width:265px; height:30px;" name="subcate"/><br>
+
+
+
+
+<span>Sub-Category : </span><input type="text" id="subcat" style="width:265px; height:30px;" placeholder="Enter Sub-Category" value="<?php echo $row['sub']; ?>" name="subcate"/><br>
+
 <span>Date Arrival: </span><input type="date" style="width:265px; height:30px;" placeholder="Date Arrival" class="tcal tcalInput"  name="date_arrival" ></input><br>
-<span>Expiry Date : </span><input type="text" style="width:265px; height:30px;" placeholder="Expiry Date" class="tcal tcalInput" name="exdate" ></input><br>
-<span>Selling Price : </span><input type="text" id="txt1" style="width:265px; height:30px;" name="price" onkeyup="sum();" Required><br>
-<span>Original Price : </span><input type="text" id="txt2" style="width:265px; height:30px;" name="o_price" onkeyup="sum();" Required><br>
+
+<span>Expiry Date : </span><input type="date" style="width:265px; height:30px;" placeholder="Expiry Date" class="tcal tcalInput" name="exdate" ></input><br>
+
+<span>Selling Price : </span><input type="text" id="txt1" style="width:265px; height:30px;" placeholder="Enter Selling Price" name="price" onkeyup="sum();" Required><br>
+
+<span>Original Price : </span><input type="text" id="txt2" style="width:265px; height:30px;" placeholder="Enter Original Price" name="o_price" onkeyup="sum();" Required><br>
+
 <span>Profit : </span><input type="text" id="txt3" style="width:265px; height:30px;" name="profit" readonly><br>
+
 <span>Supplier : </span>
-<select name="supplier"  style="width:265px; height:30px; margin-left:-5px;" >
-<option></option>
+<select name="supplier" style="width:265px; height:30px; margin-left:-5px;" >
+<option>Select Supplier</option>
 	<?php
 	include('../connect.php');
 	$result = $db->prepare("SELECT * FROM supliers");
@@ -88,50 +85,41 @@ $prefix= md5(time()*rand(1, 2)); echo strip_tags(substr($prefix ,0,4));?>" name=
 	}
 	?>
 </select><br>
-<span>Quantity : </span><input type="number" style="width:265px; height:30px;" min="0" id="txt11" onkeyup="sum();" name="qty" Required ><br>
-<span></span><input type="hidden" style="width:265px; height:30px;" id="txt22" name="qty_sold" Required ><br>
+<span>Quantity : </span><input type="number" style="width:265px; height:30px;" min="0" id="txt11" placeholder="Enter Quantity" onkeyup="sum();" name="qty" Required ><br>
+<span></span><input type="hidden" style="width:265px; height:30px;"  id="txt22" name="qty_sold" Required ><br>
 <div style="float:right; margin-right:10px;">
 <button class="btn btn-success btn-block btn-large" style="width:267px;"><i class="icon icon-save icon-large"></i> Save</button>
 </div>
 </div>
+
+
+<script src="js/bootstrap.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="js/jquery.js"></script>
+ 
+ <script type="text/javascript">
+   function GetDetail(str){
+    if (str.length == 0) {
+      document.getElementById("subcat").value = "";
+      return;
+    }
+    else{
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+          var myObj = JSON.parse(this.responseText);
+          document.getElementById("subcat").value= myObj[0];
+        }
+      };
+     xmlhttp.open("GET","search.php?cat=" +str,true);
+     xmlhttp.send();
+    }
+   }
+ </script>
+
 </form>
 </body>
-<script src="js/jquery.js"></script>
- <script type="text/javascript">
-$(function() {
 
 
-$(".delbutton").click(function(){
-
-//Save the link in a variable called element
-var element = $(this);
-
-//Find the id of the link that was clicked
-var del_id = element.attr("id");
-
-//Built a url to send
-var info = 'id=' + del_id;
- if(confirm("Sure you want to delete this update? There is NO undo!"))
-		  {
-
- $.ajax({
-   type: "GET",
-   url: "deletesales.php",
-   data: info,
-   success: function(){
-   
-   }
- });
-         $(this).parents(".record").animate({ backgroundColor: "#fbc7c7" }, "fast")
-		.animate({ opacity: "hide" }, "slow");
-
- }
-
-return false;
-
-});
-
-});
-</script>
 <?php include('footer.php');?>
 </html>

@@ -21,7 +21,7 @@ POS
 		<link href="vendors/uniform.default.css" rel="stylesheet" media="screen">
   <link href="css/bootstrap.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">
+    
   
   <link rel="stylesheet" href="css/font-awesome.min.css">
     <style type="text/css">
